@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+	</body>
+
+</html>
+<script>
+	//  继承的原理
+	//      深拷贝 值
+	//      浅拷贝 址
+
+	Object.prototype.name = "顶层的name"
+
+	function person() {
+		this.name = "person的name";
+	}
+	person.prototype = {
+		name: "person的原型的name"
+	}
+	function stu() {
+
+	}
+	stu.prototype = new person();
+	stu.prototype.name = "stu的原型的name";
+	var zhangsan = {
+		name: "zhangsan",
+		age: 12,
+		sex: "man",
+		son: {name: "xiaozhangsan",sun: {}}
+	};
+	console.log(zhangsan.son.name);
+	var lisi = copy(zhangsan);
+//	lisi.son.name = "xiaolisi";
+//	console.log(lisi.son.name)
+//	console.log(zhangsan.son.name);
+
+//利用递归，进行深拷贝
+	function copy(json) {
+		var newobj = {};
+		for(var i in json) {                            //便利json
+			if(typeof json[i] == "object") {            //如果json中还有json
+				newobj[i] = copy(json[i])               //递归调用自己，并将返回值给新数组
+			} else {
+				newobj[i] = json[i];                    //无json，直接把值给新数组
+			}
+		}
+		return newobj;
+	}
+</script>

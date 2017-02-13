@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+</html>
+
+<script>
+	
+       function myArray(){                              //构造函数myArray
+           for(var i in arguments){                     //生成数组
+               this[i]=arguments[i];
+           }
+           this.length=arguments.length;                //添加length属性
+        }
+
+        myArray.prototype={                               //用原型给myArray增加方法
+            getValue:function(type){                      //获得最大最小值,type为max和min
+            var type=type||"min";
+            var temp=this[0];
+            for(var i =0;i<this.length;i++){
+                if(type=="min") {
+                    if (temp > this[i]) {
+                        temp = this[i];                   //取最小值
+                    }
+                }else if(type=="max"){
+                    if (temp < this[i]) {
+                        temp = this[i];
+                    }
+                }
+            }
+            return temp;
+        },
+
+        sort:function(callback){                          //添加排序方法
+            var newarr=[];
+            for(var i=0;i<this.length;i++){
+                newarr.push(this[i]);
+            }
+            for(var i=0;i<newarr.length;i++){
+                for(var j=i+1;j<newarr.length;j++){
+                    if(callback(newarr[i],newarr[j])){
+                        var temp=this[i];
+                        this[i]=this[j];
+                        this[j]=temp;
+                    }
+                }
+            }
+            return newarr;
+        }
+        }
+var arr1=new myArray(343,21,123,31);
+console.log(arr1.getValue());
+	
+</script>
