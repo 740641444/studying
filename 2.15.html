@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+<style>
+	
+div{
+	width: 400px;
+	height: 400px;
+	border: 1px solid red;
+	/*line-height: 200px;*/
+	/*text-align: center;*/
+	/*font-size: 80px;*/
+}
+	
+</style>
+	</head>
+	<body>
+<div></div>
+<input type="button" name="" id="" value="发送" /><input type="button" name="" id="" value="删除" /><br />
+	</body>
+</html>
+<script>
+	
+//var xmlobj=new XMLHttpRequest()
+//xmlobj.onreadystatechange=function(){
+//	if(xmlobj.readyState==4){              //交互状态，4为交互完成,可以找到指定地址并返回
+//		if(xmlobj.status==200){            //200为交互成功
+//			console.log(xmlobj.response)
+//		}
+//	}
+//}
+//xmlobj.open("get","2.14.html",true)
+//xmlobj.send()
+
+var div=document.getElementsByTagName("div")[0]
+var btn0=document.querySelectorAll("input")[0]
+var btn1=document.querySelectorAll("input")[1]
+
+//get 方式
+//btn0.onclick=function(){
+//	var ajaxobj=new XMLHttpRequest()
+//	ajaxobj.onload=function(){
+//		var neirong=ajaxobj.responseText
+//		div.innerHTML=neirong
+//	}
+//	ajaxobj.open("get","2.15.php?name=zhangsan")
+//	ajaxobj.send()	
+//}
+//btn1.onclick=function(){
+//	div.innerHTML=""
+//}
+
+//post方式
+//btn0.onclick=function(){
+//	var ajaxobj=new XMLHttpRequest()
+//	ajaxobj.onload=function(){
+//		var neirong=ajaxobj.responseText
+//		div.innerHTML=neirong
+//	}
+//	ajaxobj.open("post","2.15.php")
+//	ajaxobj.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+//	ajaxobj.send("name=zhangsan")	
+//}
+//btn1.onclick=function(){
+//	div.innerHTML=""
+//}
+	
+//输出表格
+btn0.onclick=function(){
+	var ajaxobj=new XMLHttpRequest()
+	ajaxobj.onload=function(){
+		var neirong=ajaxobj.responseXML
+        var str=""
+        var xmlstu=neirong.getElementsByTagName("stu")
+        str+="<table>"
+        str+="<tr><th>姓名</th><th>年龄</th><th>性别</th></tr>"
+        for(var i=0;i<xmlstu.length;i++){
+        	str+="<tr>"
+        	var xmlname=xmlstu[i].querySelector("name")
+        	var xmlage=xmlstu[i].querySelector("age")
+        	var xmlsex=xmlstu[i].querySelector("sex")
+        	str+="<td>"+xmlname.innerHTML+"</td>"
+        	str+="<td>"+xmlage.innerHTML+"</td>"
+        	str+="<td>"+xmlsex.innerHTML+"</td>"
+        	str+="</tr>"
+        }
+        str+="</table>"
+        div.innerHTML=str
+	}
+	ajaxobj.open("post","2.15.xml")
+	ajaxobj.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+	ajaxobj.send()	
+}
+btn1.onclick=function(){
+	div.innerHTML=""
+}	
+
+	
+</script>
