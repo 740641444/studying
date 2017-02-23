@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="jquery.min.js"></script>
+	</head>
+	<body>
+		<form action="2.23.php" method="post" id="aa" enctype="multipart/form-data">
+			<input type="file" name="file" id="file" value="" />
+			<input type="submit" name="sub" id="sub" value="上传" />
+		</form>
+	</body>
+</html>
+<script>
+
+
+var input=document.querySelector("#file")
+input.onchange=function(){
+	var data=this.files[0];
+	var form = new FormData();
+	form.append("file",data);
+//	$.ajax({
+//		type:"post",
+//		url:"2.23.php",
+//		data:form,
+//		success:function(e){
+//			console.log(e)
+//		}
+//	});
+	
+	var req = new XMLHttpRequest();
+	req.open("post","2.23.php",true);
+	req.send(form);	
+	req.onreadystatechange=function(){
+		if(req.readyState==4&&req.status==200){
+			console.log(req.response)
+		}
+	}
+	
+}
+
+
+
+	
+</script>
