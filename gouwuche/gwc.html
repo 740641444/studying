@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="angular.min.js"></script>
+
+
+</head>
+<style>
+    *{
+        padding:0;margin: 0;
+        list-style: none;
+    }
+
+    .title{
+        text-align: center;
+        font-size: 24px;
+    }
+    .box{
+        width: 900px;
+        margin:0 auto;
+    }
+
+</style>
+<body>
+<div ng-app="myapp">
+    <div class="title">购物车</div>
+
+    <table class="box table-bordered" ng-controller="control">
+        <tr>
+            <td colspan="5">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="exampleInputAmount" placeholder="请输入搜索内容" ng-model="search">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">搜索</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">商品名称</td>
+            <td class="text-center">商品件数</td>
+            <td class="text-center">商品单价</td>
+            <td class="text-center">商品总价</td>
+            <td class="text-center">商品操作</td>
+        </tr>
+
+        <tr ng-show="data.length==0">
+            <td class="text-center" colspan="5">您还没有购买任何物品</td>
+        </tr>
+
+        <tr ng-repeat="item in data | filter:{name:search}" ng-show="data.length>0">
+            <td class="text-center">{{item.name}}</td>
+            <td class="text-center">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="exampleInputAmount"></label>
+                        <div class="input-group">
+                            <div class="input-group-addon" ng-click="jian(item.id)">-</div>
+                            <input type="text" class="form-control" id="exampleInputAmount" placeholder="" ng-model="item.num">
+                            <div class="input-group-addon" ng-click="jia(item.id)">+</div>
+                        </div>
+                    </div>
+                </form>
+            </td>
+            <td class="text-center">{{item.price}}</td>
+            <td class="text-center">{{item.price*item.num}}</td>
+            <td class="text-center"><button type="button" class="btn btn-danger" ng-click="del(item.id)">删除</button></td>
+        </tr>
+
+
+        <tr>
+            <td class="text-center">商品总数</td>
+            <td class="text-center">{{getNum()}}</td>
+            <td class="text-center">商品总价</td>
+            <td class="text-center">{{getPrice()}}</td>
+            <td class="text-center"><button type="button" class="btn btn-danger" ng-click="del()">清空所有商品</button></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+<script>
+
+    var myapp=angular.module("myapp",[])
+    myapp.controller("control",["$scope",function ($scope) {
+        $scope.data=[
+            {id:1,name:"衣服",num:1,price:100},
+            {id:2,name:"裤子",num:2,price:100},
+            {id:3,name:"鞋",num:3,price:100},
+            {id:4,name:"大棉袄",num:4,price:100},
+            {id:5,name:"小棉袄",num:5,price:100}
+        ]
+        $scope.getNum=function () {
+            var num=0;
+            $scope.data.forEach(function (obj,index) {
+                num+=parseInt(obj.num);
+            })
+            return num;
+        }
+        $scope.getPrice=function () {
+            var num=0;
+            $scope.data.forEach(function (obj,index) {
+                num+=obj.price*obj.num;
+            })
+            return num;
+        }
+        $scope.del=function (e) {
+            if(e){
+                $scope.data.forEach(function (obj,index) {
+                    if(obj.id==e){
+                        $scope.data.splice(index,1)
+                    }
+                })
+            }else{
+                $scope.data=[];
+            }
+        }
+        
+        $scope.$watch("data",function(old,news) {
+            $scope.data.forEach(function (obj,index) {
+                if(parseInt(obj.num)<=0||!parseInt(obj.num)){
+                    obj.num=0
+                }
+            })
+        },true)
+
+        $scope.jian=function (e) {
+            $scope.data.forEach(function (obj,index) {
+                if(obj.id==e){
+                    obj.num-=1
+                }
+            })
+        }
+        $scope.jia=function (e) {
+            $scope.data.forEach(function (obj,index) {
+                if(obj.id==e){
+                    obj.num+=1
+                }
+            })
+        }
+
+    }])
+
+
+</script>
